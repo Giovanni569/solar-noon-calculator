@@ -21,3 +21,10 @@ Timezones are expressed as a fixed UTC offset in minutes, not as a named zone. T
 - **Polar latitudes**: the sun may not rise or set, but the meridian crossing still occurs; this library returns that instant and does not attempt to detect polar day/night.
 - **Antimeridian (±180° longitude)**: produces a valid instant, but the "date" of solar noon may appear shifted relative to local civil date depending on how your offset is defined.
 - **Accuracy**: expect ±2 minutes compared to high-precision ephemerides; do not use for navigation.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
